@@ -2,7 +2,7 @@
 
 import { isValidObjectId } from "mongoose";
 import NotFound from "../../(components)/notFound";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Markdown from "@/app/(components)/Markdown";
 import { getApplication, getApplications } from "@/lib/functions";
 

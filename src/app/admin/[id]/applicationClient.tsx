@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { application } from "@prisma/client";
+import { type application } from "@prisma/client";
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 import { deleteApplicationServer, editApplicationServer } from "@/lib/actions";
 import { z } from "zod";
 import { ApplicationSchema } from "@/lib/zod";
-import { TStatus } from "@/lib/types";
+import type { TStatus } from "@/lib/types";
 
 export function ApplicationClient(props: { application: application }) {
   const [input, setInput] = useState<z.infer<typeof ApplicationSchema>>({
@@ -26,14 +26,12 @@ export function ApplicationClient(props: { application: application }) {
   });
   const [showMarkdownDisplay, setShowMarkdownDisplay] = useState(false);
 
-  async function editApplicationClient(e: FormEvent) {
-    e.preventDefault();
-
+  async function editApplicationClient() {
     const parsed = ApplicationSchema.safeParse(input);
 
     if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
+        (prev) => (prev = { ...prev, error: parsed.error.issues[0].message }),
       );
     }
 
@@ -43,7 +41,8 @@ export function ApplicationClient(props: { application: application }) {
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { ...prev, loading: false, error: response.err! })
+            (prev) =>
+              (prev = { ...prev, loading: false, error: response.err! }),
           );
         } else {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
@@ -51,20 +50,19 @@ export function ApplicationClient(props: { application: application }) {
         }
       })
       .catch((err: string) =>
-        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err })),
       );
   }
 
-  async function deleteApplicationClient(e: FormEvent) {
-    e.preventDefault();
-
+  async function deleteApplicationClient() {
     setStatus((prev) => (prev = { ...prev, loading: true, error: "" }));
 
     await deleteApplicationServer(props.application.id)
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { ...prev, loading: false, error: response.err! })
+            (prev) =>
+              (prev = { ...prev, loading: false, error: response.err! }),
           );
         } else {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
@@ -72,7 +70,7 @@ export function ApplicationClient(props: { application: application }) {
         }
       })
       .catch((err: string) =>
-        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err })),
       );
   }
 
@@ -96,7 +94,7 @@ export function ApplicationClient(props: { application: application }) {
                 value={input.title}
                 onChange={(e) =>
                   setInput(
-                    (prev) => (prev = { ...prev, title: e.target.value })
+                    (prev) => (prev = { ...prev, title: e.target.value }),
                   )
                 }
                 type="text"
@@ -129,7 +127,7 @@ export function ApplicationClient(props: { application: application }) {
                       (prev = {
                         ...prev,
                         expires: new Date(e.target.value),
-                      })
+                      }),
                   );
                 }}
                 type="date"
@@ -145,7 +143,7 @@ export function ApplicationClient(props: { application: application }) {
                 onChange={(e) =>
                   setInput(
                     (prev) =>
-                      (prev = { ...prev, positions: parseInt(e.target.value) })
+                      (prev = { ...prev, positions: parseInt(e.target.value) }),
                   )
                 }
                 type="number"
@@ -159,7 +157,7 @@ export function ApplicationClient(props: { application: application }) {
                 onChange={(e) =>
                   setInput(
                     //@ts-expect-error funker fint
-                    (prev) => (prev = { ...prev, type: e.target.value })
+                    (prev) => (prev = { ...prev, type: e.target.value }),
                   )
                 }
                 className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -181,7 +179,7 @@ export function ApplicationClient(props: { application: application }) {
                         ...prev,
                         //@ts-expect-error funker fint
                         archived: e.target.value == 1 ? true : false,
-                      })
+                      }),
                   )
                 }
                 className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -207,7 +205,8 @@ export function ApplicationClient(props: { application: application }) {
                 defaultValue={input.archivedText ?? ""}
                 onChange={(e) =>
                   setInput(
-                    (prev) => (prev = { ...prev, archivedText: e.target.value })
+                    (prev) =>
+                      (prev = { ...prev, archivedText: e.target.value }),
                   )
                 }
                 className="h-[20dvh] text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"

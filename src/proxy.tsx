@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export default auth(async (request) => {
   if (request.nextUrl.pathname.startsWith("/admin") && !request.auth) {
     return NextResponse.redirect(
-      new URL("/auth/login", request.nextUrl.origin)
+      new URL("/auth/login", request.nextUrl.origin),
     );
   }
 

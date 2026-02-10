@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import NotFound from "@/app/(components)/notFound";
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import { ApplicationClient } from "./applicationClient";
 import { getApplication } from "@/lib/functions";
 

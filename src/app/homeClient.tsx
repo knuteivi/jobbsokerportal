@@ -1,7 +1,7 @@
 "use client";
 
-import { TApplicationFilter } from "@/lib/types";
-import { application, applicationType } from "@prisma/client";
+import type { TApplicationFilter } from "@/lib/types";
+import type { application, applicationType } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ApplicationCard from "./(components)/ApplicationCard";
 import { getStatus } from "@/utils";
@@ -18,12 +18,12 @@ export function HomeClient(props: { applications: application[] }) {
     let filteredApplications = props.applications;
 
     filteredApplications = filteredApplications.filter((application) =>
-      application.title.toLowerCase().match(filter.search.toLowerCase())
+      application.title.toLowerCase().match(filter.search.toLowerCase()),
     );
 
     if (filter.type != "all") {
       filteredApplications = filteredApplications.filter(
-        (application) => application.type == filter.type
+        (application) => application.type == filter.type,
       );
     }
 
@@ -41,13 +41,13 @@ export function HomeClient(props: { applications: application[] }) {
   const applicationsValid = applications.filter(
     (application) =>
       getStatus(application.expires, new Date()) != "EXPIRED" &&
-      application.archived == false
+      application.archived == false,
   );
 
   const applicationsExpired = applications.filter(
     (application) =>
       getStatus(application.expires, new Date()) == "EXPIRED" &&
-      application.archived == false
+      application.archived == false,
   );
 
   return (

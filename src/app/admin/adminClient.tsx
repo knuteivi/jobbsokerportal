@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { TApplicationFilter } from "@/lib/types";
-import { application } from "@prisma/client";
+import type { TApplicationFilter } from "@/lib/types";
+import { type application } from "@prisma/client";
 import ApplicationCard from "../(components)/ApplicationCard";
 
 export default function AdminClient(props: { applications: application[] }) {
@@ -17,12 +17,12 @@ export default function AdminClient(props: { applications: application[] }) {
     let filteredApplications = props.applications;
 
     filteredApplications = filteredApplications.filter((application) =>
-      application.title.toLowerCase().match(filter.search.toLowerCase())
+      application.title.toLowerCase().match(filter.search.toLowerCase()),
     );
 
     if (filter.type != "all") {
       filteredApplications = filteredApplications.filter(
-        (application) => application.type == filter.type
+        (application) => application.type == filter.type,
       );
     }
 
@@ -38,11 +38,11 @@ export default function AdminClient(props: { applications: application[] }) {
   }, [filter, props.applications]);
 
   const normalApplications = applications.filter(
-    (application) => application.archived == false
+    (application) => application.archived == false,
   );
 
   const archivedApplications = applications.filter(
-    (application) => application.archived == true
+    (application) => application.archived == true,
   );
 
   return (

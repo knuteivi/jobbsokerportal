@@ -2,10 +2,10 @@
 
 import MarkdownDisplay from "@/app/(components)/MarkdownDisplay";
 import { newApplicationServer } from "@/lib/actions";
-import { TStatus } from "@/lib/types";
+import type { TStatus } from "@/lib/types";
 import { ApplicationSchema } from "@/lib/zod";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { type SubmitEvent, useState } from "react";
 import { z } from "zod";
 
 export default function NewApplicationClient() {
@@ -25,14 +25,14 @@ export default function NewApplicationClient() {
   });
   const [showMarkdownDisplay, setShowMarkdownDisplay] = useState(false);
 
-  async function newApplicationClient(e: FormEvent) {
+  async function newApplicationClient(e: SubmitEvent) {
     e.preventDefault();
 
     const parsed = ApplicationSchema.safeParse(input);
 
     if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
+        (prev) => (prev = { ...prev, error: parsed.error.issues[0].message }),
       );
     }
 
@@ -42,7 +42,8 @@ export default function NewApplicationClient() {
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { ...prev, loading: false, error: response.err! })
+            (prev) =>
+              (prev = { ...prev, loading: false, error: response.err! }),
           );
         } else {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
@@ -50,7 +51,7 @@ export default function NewApplicationClient() {
         }
       })
       .catch((err: string) =>
-        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err })),
       );
   }
 
@@ -104,7 +105,7 @@ export default function NewApplicationClient() {
                     (prev = {
                       ...prev,
                       expires: new Date(e.target.value),
-                    })
+                    }),
                 );
               }}
               type="date"
@@ -120,7 +121,7 @@ export default function NewApplicationClient() {
               onChange={(e) =>
                 setInput(
                   (prev) =>
-                    (prev = { ...prev, positions: parseInt(e.target.value) })
+                    (prev = { ...prev, positions: parseInt(e.target.value) }),
                 )
               }
               type="number"
@@ -134,7 +135,7 @@ export default function NewApplicationClient() {
               onChange={(e) =>
                 setInput(
                   //@ts-expect-error funker fint
-                  (prev) => (prev = { ...prev, type: e.target.value })
+                  (prev) => (prev = { ...prev, type: e.target.value }),
                 )
               }
               className="text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -160,7 +161,7 @@ export default function NewApplicationClient() {
               defaultValue={input.archivedText ?? ""}
               onChange={(e) =>
                 setInput(
-                  (prev) => (prev = { ...prev, archivedText: e.target.value })
+                  (prev) => (prev = { ...prev, archivedText: e.target.value }),
                 )
               }
               className="h-[20dvh] text-sm lg:text-base rounded-md px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -1,4 +1,4 @@
-import { applicationType } from "@prisma/client";
+import type { applicationType } from "@prisma/client";
 
 export type TServerActionResponse = { err?: string; suc?: string };
 

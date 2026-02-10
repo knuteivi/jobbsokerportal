@@ -1,9 +1,9 @@
 "use client";
 
 import { loginServer } from "@/lib/actions";
-import { TStatus } from "@/lib/types";
+import type { TStatus } from "@/lib/types";
 import { LoginSchema } from "@/lib/zod";
-import { FormEvent, useState } from "react";
+import { type SubmitEvent, useState } from "react";
 import { z } from "zod";
 
 export default function LoginClient() {
@@ -16,14 +16,14 @@ export default function LoginClient() {
     error: "",
   });
 
-  async function loginClient(e: FormEvent) {
+  async function loginClient(e: SubmitEvent) {
     e.preventDefault();
 
     const parsed = LoginSchema.safeParse(input);
 
     if (!parsed.success) {
       return setStatus(
-        (prev) => (prev = { ...prev, error: parsed.error.errors[0].message })
+        (prev) => (prev = { ...prev, error: parsed.error.issues[0].message }),
       );
     }
 
@@ -33,7 +33,8 @@ export default function LoginClient() {
       .then((response) => {
         if (response.err) {
           setStatus(
-            (prev) => (prev = { ...prev, loading: false, error: response.err! })
+            (prev) =>
+              (prev = { ...prev, loading: false, error: response.err! }),
           );
         } else {
           setStatus((prev) => (prev = { ...prev, loading: false, error: "" }));
@@ -41,7 +42,7 @@ export default function LoginClient() {
         }
       })
       .catch((err: string) =>
-        setStatus((prev) => (prev = { ...prev, loading: false, error: err }))
+        setStatus((prev) => (prev = { ...prev, loading: false, error: err })),
       );
   }
 

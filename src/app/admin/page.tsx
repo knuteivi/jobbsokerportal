@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { type Metadata } from "next";
 import Link from "next/link";
 import AdminClient from "./adminClient";
 import { getApplications } from "@/lib/functions";

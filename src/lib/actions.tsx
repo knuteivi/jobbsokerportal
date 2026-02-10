@@ -1,7 +1,7 @@
 "use server";
 
 import { auth, signIn, signOut } from "./auth";
-import { TServerActionResponse } from "./types";
+import type { TServerActionResponse } from "./types";
 import { prisma } from "./prisma";
 import { revalidateTag } from "next/cache";
 import { getApplication } from "./functions";
@@ -9,7 +9,7 @@ import { z } from "zod";
 import { ApplicationSchema, LoginSchema } from "./zod";
 
 export async function loginServer(
-  input: z.infer<typeof LoginSchema>
+  input: z.infer<typeof LoginSchema>,
 ): Promise<TServerActionResponse> {
   const session = await auth();
 
@@ -17,7 +17,7 @@ export async function loginServer(
 
   const parsed = LoginSchema.safeParse(input);
 
-  if (!parsed.success) return { err: parsed.error.errors[0].message };
+  if (!parsed.success) return { err: parsed.error.issues[0].message };
 
   try {
     await signIn("credentials", {
@@ -37,7 +37,7 @@ export async function logoutServer() {
 }
 
 export async function newApplicationServer(
-  input: z.infer<typeof ApplicationSchema>
+  input: z.infer<typeof ApplicationSchema>,
 ): Promise<TServerActionResponse> {
   const session = await auth();
 
@@ -45,7 +45,7 @@ export async function newApplicationServer(
 
   const parsed = ApplicationSchema.safeParse(input);
 
-  if (!parsed.success) return { err: parsed.error.errors[0].message };
+  if (!parsed.success) return { err: parsed.error.issues[0].message };
 
   parsed.data = { ...parsed.data, archived: false };
 
@@ -55,15 +55,15 @@ export async function newApplicationServer(
     },
   });
 
-  revalidateTag("applications");
-  revalidateTag("application-" + applicationCreated.id);
+  revalidateTag("applications", "max");
+  revalidateTag("application-" + applicationCreated.id, "max");
 
   return { suc: "Vellykket!" };
 }
 
 export async function editApplicationServer(
   input: z.infer<typeof ApplicationSchema>,
-  id: string
+  id: string,
 ): Promise<TServerActionResponse> {
   const session = await auth();
 
@@ -71,7 +71,7 @@ export async function editApplicationServer(
 
   const parsed = ApplicationSchema.safeParse(input);
 
-  if (!parsed.success) return { err: parsed.error.errors[0].message };
+  if (!parsed.success) return { err: parsed.error.issues[0].message };
 
   if (!id) return { err: "ID mangler." };
 
@@ -86,14 +86,14 @@ export async function editApplicationServer(
     },
   });
 
-  revalidateTag("applications");
-  revalidateTag("application-" + id);
+  revalidateTag("applications", "max");
+  revalidateTag("application-" + id, "max");
 
   return { suc: "Vellykket!" };
 }
 
 export async function deleteApplicationServer(
-  id: string
+  id: string,
 ): Promise<TServerActionResponse> {
   const session = await auth();
 
@@ -109,8 +109,8 @@ export async function deleteApplicationServer(
     where: { id: id },
   });
 
-  revalidateTag("applications");
-  revalidateTag("application-" + id);
+  revalidateTag("applications", "max");
+  revalidateTag("application-" + id, "max");
 
   return { suc: "Vellykket!" };
 }

@@ -1,5 +1,5 @@
 import { getStatus } from "@/utils";
-import { application } from "@prisma/client";
+import { type application } from "@prisma/client";
 
 export default function ApplicationCard(props: {
   application: application;
