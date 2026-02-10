@@ -13,19 +13,19 @@ export default auth(async (request) => {
     return NextResponse.redirect(new URL("/admin", request.nextUrl.origin));
   }
 
-  if (process.env.NODE_ENV === "production") {
-    const nonce = randomBytes(32).toString("base64");
-    const csp = `default-src 'self'; script-src 'self' 'nonce-${nonce}'; connect-src 'self'; media-src 'self'; frame-src 'none'; style-src 'self' 'nonce-${nonce}'; img-src 'self' blob: data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;`;
+  // if (process.env.NODE_ENV === "production") {
+  //   const nonce = randomBytes(32).toString("base64");
+  //   const csp = `default-src 'self'; script-src 'self' 'nonce-${nonce}'; connect-src 'self'; media-src 'self'; frame-src 'none'; style-src 'self' 'nonce-${nonce}'; img-src 'self' blob: data:; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests;`;
 
-    const headers = new Headers(request.headers);
-    headers.set("x-nonce", nonce);
-    headers.set("content-security-policy", csp);
+  //   const headers = new Headers(request.headers);
+  //   headers.set("x-nonce", nonce);
+  //   headers.set("content-security-policy", csp);
 
-    const response = NextResponse.next({ request: { headers } });
-    response.headers.set("content-security-policy", csp);
+  //   const response = NextResponse.next({ request: { headers } });
+  //   response.headers.set("content-security-policy", csp);
 
-    return response;
-  }
+  //   return response;
+  // }
 
   NextResponse.next();
 });
