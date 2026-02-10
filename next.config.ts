@@ -11,18 +11,13 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   headers: async () => [
     {
-      source: "/api/:path*",
+      source: "/:path*",
       headers: [
         { key: "Access-Control-Allow-Origin", value: "jobb-tiller.vercel.app" },
         {
           key: "Access-Control-Allow-Methods",
           value: "GET,POST,OPTIONS",
         },
-      ],
-    },
-    {
-      source: "/:path*",
-      headers: [
         {
           key: "Strict-Transport-Security",
           value: "max-age=63072000; includeSubDomains; preload",
