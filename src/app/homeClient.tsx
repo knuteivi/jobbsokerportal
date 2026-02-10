@@ -101,7 +101,7 @@ export function HomeClient(props: { applications: application[] }) {
         </h5>
       )}
       {applicationsValid.length > 0 && (
-        <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
+        <div className="mt-[2dvh] grid sm:grid-cols-2 md:grid-cols-3 items-center gap-[2dvh]">
           {applicationsValid.map((application) => (
             <ApplicationCard
               key={application.id}
