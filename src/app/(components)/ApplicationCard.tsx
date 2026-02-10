@@ -9,7 +9,7 @@ export default function ApplicationCard(props: {
   const status = getStatus(expiresDate, new Date());
 
   return (
-    <div className="w-[400px] lg:w-[300px] max-w-[100%] rounded-md overflow-hidden shadow-lg p-4 bg-white text-black border border-gray-300">
+    <div className="rounded-md overflow-hidden shadow-lg p-4 bg-white text-black border border-gray-300">
       <div className="font-bold text-base lg:text-lg mb-2">
         {props.application.title}
       </div>

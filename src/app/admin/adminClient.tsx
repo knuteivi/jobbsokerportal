@@ -86,7 +86,7 @@ export default function AdminClient(props: { applications: application[] }) {
       </h4>
 
       {normalApplications.length > 0 && (
-        <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
+        <div className="mt-[2dvh] grid sm:grid-cols-2 md:grid-cols-3 items-center gap-[2dvh]">
           {normalApplications.map((application) => (
             <ApplicationCard
               key={application.id}
@@ -102,7 +102,7 @@ export default function AdminClient(props: { applications: application[] }) {
       </h4>
 
       {archivedApplications.length > 0 && (
-        <div className="mt-[2dvh] flex flex-wrap items-center gap-[2dvh]">
+        <div className="mt-[2dvh] grid sm:grid-cols-2 md:grid-cols-3 items-center gap-[2dvh]">
           {archivedApplications.map((application) => (
             <ApplicationCard
               key={application.id}
